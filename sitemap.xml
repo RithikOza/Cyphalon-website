@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://cyphalon.com/</loc></url>
-  <url><loc>https://cyphalon.com/identity.html</loc></url>
-  <url><loc>https://cyphalon.com/endpoint.html</loc></url>
-  <url><loc>https://cyphalon.com/vulnerability.html</loc></url>
-  <url><loc>https://cyphalon.com/visibility.html</loc></url>
-  <url><loc>https://cyphalon.com/industries.html</loc></url>
-  <url><loc>https://cyphalon.com/contact.html</loc></url>
+  <url><loc>https://cyphalon.com/identity</loc></url>
+  <url><loc>https://cyphalon.com/endpoint</loc></url>
+  <url><loc>https://cyphalon.com/vulnerability</loc></url>
+  <url><loc>https://cyphalon.com/visibility</loc></url>
+  <url><loc>https://cyphalon.com/industries</loc></url>
+  <url><loc>https://cyphalon.com/contact</loc></url>
 </urlset>

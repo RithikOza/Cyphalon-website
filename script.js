@@ -71,6 +71,10 @@
         value('message'),
       ].join('\n');
       const address = form.getAttribute('data-mailto-form');
+      // Meta Pixel: record the enquiry as a Lead before the email app opens.
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', { content_name: interestLabel, content_category: 'Contact form' });
+      }
       window.location.href = `mailto:${address}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       const status = form.querySelector('.form-status');
       if (status) {

@@ -1,59 +1,64 @@
 # Cyphalon — static website
 
-A static HTML/CSS/JavaScript website. No Node.js, build step, database or server code is needed.
+A static HTML/CSS/JavaScript website for [cyphalon.com](https://cyphalon.com), hosted on **Cloudflare Pages**. There is no Node.js, build step, database or server code.
 
 ## Pages
 
-| File | Page |
-|---|---|
-| `index.html` | Home |
-| `identity.html` | Identity & Access Management (Keycloak) |
-| `endpoint.html` | Endpoint Security (Wazuh) |
-| `vulnerability.html` | Vulnerability Assessment & Penetration Testing |
-| `visibility.html` | Security Visibility — SIEM & dashboards (Wazuh + Grafana) |
-| `industries.html` | Industries, with a recommended starting point for each |
-| `contact.html` | Contact form (opens the visitor's email app, so no server is needed) |
-| `404.html` | Not-found page (GitHub Pages serves it automatically) |
+| File | Live URL | Page |
+|---|---|---|
+| `index.html` | `/` | Home |
+| `identity.html` | `/identity` | Identity & Access Management (Keycloak) |
+| `endpoint.html` | `/endpoint` | Endpoint Security (Wazuh) |
+| `vulnerability.html` | `/vulnerability` | Vulnerability Assessment & Penetration Testing |
+| `visibility.html` | `/visibility` | Security Visibility — SIEM & dashboards (Wazuh + Grafana) |
+| `industries.html` | `/industries` | Industries, with a recommended starting point for each |
+| `contact.html` | `/contact` | Contact form (opens the visitor's email app, so no server is needed) |
+| `404.html` | — | Not-found page, served automatically by Cloudflare Pages |
 
-Every page shares `styles.css`, `script.js` and `assets/favicon.svg`. The header, footer and navigation are the same on every page.
+Every page shares `styles.css`, `script.js` and `assets/favicon.svg`.
+
+Cloudflare Pages serves clean URLs, so `/identity.html` redirects to `/identity`. The canonical tags, `og:url` tags and `sitemap.xml` use the clean URLs. Links between pages still use `.html` so the site also works when opened from a local folder.
+
+## Meta Pixel
+
+Pixel ID `1096894659651998` is installed on every page:
+
+- **PageView** fires on every page load. The script is in each page's `<head>`, and the `<noscript>` fallback is at the top of `<body>`.
+- **Lead** fires when someone submits the contact form, with the chosen service as `content_name` (see `script.js`).
+
+If you add a new page, copy the Meta Pixel block from an existing page's `<head>` and the `<noscript>` block below `<body>`.
+
+## Deploying (Cloudflare Pages)
+
+Cloudflare Pages is connected to this repository, and **every push to `main` deploys automatically**.
+
+First-time setup, for reference:
+
+1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git** → select this repository.
+2. Build settings:
+   - **Production branch:** `main`
+   - **Framework preset:** None
+   - **Build command:** *(leave empty)*
+   - **Build output directory:** `/`
+3. **Save and Deploy**. Cloudflare gives you a preview address on `*.pages.dev`.
+4. In the project, open **Custom domains** and add `cyphalon.com` and `www.cyphalon.com`. First delete any old `A`, `AAAA` or `CNAME` records for those hostnames that point to the previous server. Otherwise Cloudflare reports a conflict.
+5. Optional: add a redirect rule under **Rules → Redirect Rules** that sends `www.cyphalon.com/*` to `https://cyphalon.com/${1}`.
+
+HTTPS certificates are issued automatically.
+
+## Editing the site
+
+- **Text and content:** edit the relevant `.html` file. The header, navigation and footer are repeated in every page, so change them in all files.
+- **Styles:** `styles.css`. **Behavior** (mobile menu, Solutions dropdown, contact form, Lead event): `script.js`.
+- **Email address:** contact links use `business@cyphalon.com`. Search and replace it across the `.html` files and in `contact.html`'s `data-mailto-form` attribute to change it.
+- **New page:** copy an existing service page as a starting point, add it to the navigation and footer in every page, and add its clean URL to `sitemap.xml`.
 
 ## Preview locally
 
-Unzip the folder and double-click `index.html`. All links between pages work offline. Fonts load from Google Fonts when you're online.
-
-Or run a local server from this folder:
+Double-click `index.html`, or run a local server from this folder:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then visit `http://localhost:8000`.
-
-## Before going live
-
-- `sitemap.xml`, `robots.txt` and the canonical tags assume the domain `https://cyphalon.com`. If you use a different domain, update it there.
-- All contact links use `business@cyphalon.com`. Confirm the mailbox exists.
-
-## Publish on GitHub Pages
-
-1. Create a new GitHub repository (for example, `cyphalon-website`).
-2. Upload the contents of this folder to the repository root. The root should contain all the `.html` files, `styles.css`, `script.js`, `sitemap.xml`, `robots.txt` and `assets/`.
-3. Open **Settings → Pages** in the repository.
-4. Under **Build and deployment**, choose **Deploy from a branch**.
-5. Select branch `main` and folder `/ (root)`, then save.
-6. Wait for the Pages deployment to complete. Your GitHub Pages URL will appear in the Pages settings.
-
-## Connect a custom domain using Cloudflare DNS
-
-Use the custom-domain field in **GitHub repository → Settings → Pages** first, and save the exact domain you plan to use. Then create the matching DNS records in Cloudflare. For an apex/root domain (`example.com`), GitHub currently documents these `A` records:
-
-- `185.199.108.153`
-- `185.199.109.153`
-- `185.199.110.153`
-- `185.199.111.153`
-
-For `www.example.com`, add a `CNAME` record with name `www` and target `<your-github-username>.github.io` (do not add the repository name to the target). For both root and `www`, configure both hostnames in GitHub Pages if you intend to use both. Keep an eye out for conflicting old `A`, `AAAA`, or `CNAME` records at the same hostnames.
-
-After DNS is correct, return to **Settings → Pages** and enable **Enforce HTTPS** when the option becomes available. DNS propagation and certificate provisioning can take time. If you proxy the records through Cloudflare, troubleshoot with DNS-only (grey cloud) first if domain validation or HTTPS does not work.
-
-The email links on this site use `business@cyphalon.com`. Confirm that mailbox exists before publishing, or change the address in `index.html` to the one you actively use.
+Then visit `http://localhost:8000`. Fonts load from Google Fonts when you're online.

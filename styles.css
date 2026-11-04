@@ -488,7 +488,11 @@ a.industry-item:hover { color: #008eaf; }
   .nav-item { display: block; height: auto; }
   .nav-trigger { width: 100%; min-height: 42px; justify-content: space-between; padding: 0 12px; text-align: left; }
   .nav-trigger .caret { display: none; }
-  .submenu { position: static; width: auto; padding: 0 0 6px 8px; opacity: 1; visibility: visible; transform: none; border: 0; box-shadow: none; background: transparent; }
+  .submenu,
+  .nav-item:hover .submenu,
+  .nav-item:focus-within .submenu,
+  .nav-item.open .submenu { position: static; width: auto; padding: 0 0 6px 8px; opacity: 1; visibility: visible; transform: none; transition: none; border: 0; box-shadow: none; background: transparent; }
+  .nav-trigger { cursor: default; }
   .submenu-link { padding: 7px 8px; grid-template-columns: 30px 1fr; gap: 10px; }
   .submenu-icon { width: 30px; height: 30px; }
   .submenu-icon svg { width: 20px; height: 20px; }
